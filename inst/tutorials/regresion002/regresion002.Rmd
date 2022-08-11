@@ -1,5 +1,5 @@
 ---
-title: "Modelo de Regresión Lineal Simple"
+title: "Modelo de Regresión Lineal Múltiple"
 author: David Arango - Daniel E. Gonzalez 
 output: 
   learnr::tutorial:
@@ -44,6 +44,7 @@ knitr::include_graphics("images/banner3.png")
     + `shapiro.test` : prueba de normalidad                    
     + `lmtest::bptest` : prueba de varianza constante          
     + `lmtest::dwtest` : prueba de no autocorrelación   
+    + 
     +  `predict` : predicción     
 
 
@@ -88,120 +89,3 @@ plot(espacio,ventas,  # variables
 ```
 
 </br></br>
-
-##### 2. Estime un modelo de regresión lineal simple que permita encontrar la relación entre ventas semanales y el espacio asignado
-
-```{r p12, exercise=TRUE, exercise.lines = 5}
-
-```
-
-```{r p12-hint}
-modelo1=lm(ventas ~ espacio) # estimacion del modelo por MCO
-summary(modelo1) # impresion del resumen
-```
-
-</br></br>
-
-##### 3.Verifique si los errores siguen una distribución normal
-
-```{r p13, exercise=TRUE, exercise.lines = 5}
-
-```
-
-```{r p13-hint}
-e=modelo1$residuals
-shapiro.test(e)  # validacion supuesto de normalidad de los errores
-```
-
-</br></br>
-
-##### 4. Verifique si los errores tienen variaza constante
-
-```{r p14, exercise=TRUE, exercise.lines = 5}
-
-```
-
-```{r p14-hint}
-lmtest::bptest(modelo1) # validacion de varianza de erores constante
-```
-
-</br></br>
-
-##### 5. Verifique si los errores son independientes (no presentan autocorrelación)
-
-```{r p15, exercise=TRUE, exercise.lines = 5}
-
-```
-
-```{r p15-hint}
-lmtest::dwtest(modelo1) # validacion de no autocorrelacion de errores
-```
-
-</br></br>
-
-##### 6. Estime el valor de las ventas en caso de que el espacio sea de 5 $ft^2$
-
-```{r p16, exercise=TRUE, exercise.lines = 5}
-
-```
-
-```{r p16-hint}
-x0 <- data.frame(espacio=5)
-predict(object=modelo1, 
-        newdata=x0, 
-        interval="prediction", 
-        level=0.95)
-```
-
-</br></br>
-
-##### 7. Estime el valor promedio de las ventas en caso de tener un espacio asignado promedio de 5 $ft^2$
- 
-```{r p17, exercise=TRUE, exercise.lines = 5}
-
-```
-
-```{r p17-hint}
-x0 <- data.frame(espacio=5)
-predict(object=modelo1, 
-        newdata=x0, 
-        interval="confidence", 
-        level=0.95)
-```
-
-</br></br>
-
-##### 8. Determine un intervalo de confianza para la pediente del 90%
-
-```{r p18, exercise=TRUE, exercise.lines = 5}
-
-```
-
-```{r p18-hint}
-confint(object=modelo1, 
-        parm="espacio", level=0.90)
-```
-
-</br></br>
-
-
-```{r}
-library(ggplot2)
-
-espacio <- c(6, 3, 6, 9, 3, 9, 6, 3, 9, 6, 3, 9)
-ventas <- c(526, 421, 581, 630, 412, 560, 434, 443, 590, 570, 346, 672)
-data=data.frame(espacio,ventas)
-modelo1=lm(ventas ~ espacio) # estimacion del modelo por MCO
-yhat <- predict(object=modelo1, interval="prediction", level=0.95)
-data1 <- cbind(data, yhat)
-
-
-ggplot(data1, aes(x=espacio, y=ventas))+
-    geom_point() +
-    geom_line(aes(y=lwr), color="red", linetype="dashed") +
-    geom_line(aes(y=upr), color="red", linetype="dashed") +
-    geom_smooth(method=lm, formula=y~x, se=TRUE, level=0.95, col='blue', fill='pink2') +
-    theme_light()
-
-```
-
