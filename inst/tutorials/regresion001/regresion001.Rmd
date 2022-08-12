@@ -69,7 +69,7 @@ Se realizó un experimento en un supermercado para observar la relación entre l
 
 </br></br>
 
-##### 1. Cosnstruya dispersión de los datos.
+##### 1. Cosnstruya un diagrama de dispersión con la información suministrada.
 
 ```{r p11, exercise=TRUE, exercise.lines = 15}
 
